@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DailyDrop Landing Page</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <header>
+      <div class="logo">
+        <span id="logoText">DailyDrop</span>
+      </div>
+
+      <div class="lang-buttons">
+        <button onclick="changeLang('en')" class="active">English</button>
+        <button onclick="changeLang('kn')">ಕನ್ನಡ</button>
+        <button onclick="changeLang('hi')">हिंदी</button>
+      </div>
+    </header>
+
+    <section class="hero">
+      <h1 id="title">From Daily Choices to Community Change</h1>
+
+      <p id="desc">
+        A platform that captures everyday environmental actions and converts
+        them into measurable sustainability impact.
+      </p>
+
+      <div class="quote" id="quote">
+        “Small daily actions create big future changes.”
+      </div>
+
+      <div class="hero-buttons">
+        <a
+          href="http://localhost:8080/dashboard"
+          class="primary-btn"
+          id="dashBtn"
+          >View Community Dashboard</a
+        >
+        <a
+          href="http://localhost:8080/volform"
+          class="secondary-btn"
+          id="volBtn"
+          >Volunteer Form</a
+        >
+      </div>
+    </section>
+
+    <footer id="footerText">
+      © 2026 DailyDrop | Together for Sustainable Living
+    </footer>
+
+    <script>
+      function changeLang(lang) {
+        let data = {
+          en: {
+            title: "From Daily Choices to Community Change",
+            desc: "A platform that captures everyday environmental actions and converts them into measurable sustainability impact.",
+            quote: "Small daily actions create big future changes.",
+            dash: "View Community Dashboard",
+            vol: "Volunteer Form",
+            foot: "© 2026 DailyDrop | Together for Sustainable Living",
+          },
+
+          kn: {
+            title: "ದೈನಂದಿನ ಆಯ್ಕೆಗಳಿಂದ ಸಮುದಾಯ ಬದಲಾವಣೆಯವರೆಗೆ",
+            desc: "ನದೈನಂದಿನ ಪರಿಸರ ಕ್ರಿಯೆಗಳನ್ನು ಸೆರೆಹಿಡಿಯುವ ಮತ್ತು ಅವುಗಳನ್ನು ಅಳೆಯಬಹುದಾದ ಸುಸ್ಥಿರತೆಯ ಪರಿಣಾಮವಾಗಿ ಪರಿವರ್ತಿಸುವ ವೇದಿಕೆ.",
+            quote: "ಸಣ್ಣ ದಿನನಿತ್ಯದ ಕಾರ್ಯಗಳು ದೊಡ್ಡ ಭವಿಷ್ಯ ಬದಲಾವಣೆ ತರುತ್ತವೆ.",
+            dash: "ಸಮುದಾಯ ಡ್ಯಾಶ್‌ಬೋರ್ಡ್ ವೀಕ್ಷಿಸಿ",
+            vol: "ಸ್ವಯಂಸೇವಕರ ಫಾರ್ಮ್",
+            foot: "© 2026 DailyDrop | ಶಾಶ್ವತ ಜೀವನಕ್ಕಾಗಿ ಒಟ್ಟಾಗಿ",
+          },
+
+          hi: {
+            title: "रोज़मर्रा के चुनावों से सामुदायिक बदलाव तक",
+            desc: "एक ऐसा प्लेटफ़ॉर्म जो रोज़मर्रा की पर्यावरणीय गतिविधियों को दर्ज करता है और उन्हें मापने योग्य स्थिरता प्रभाव में बदल देता है।",
+            quote: "छोटे दैनिक कदम बड़े भविष्य बदलते हैं।",
+            dash: "समुदाय डैशबोर्ड देखें",
+            vol: "स्वयंसेवक फॉर्म",
+            foot: "© 2026 DailyDrop | सतत जीवन के लिए साथ मिलकर",
+          },
+        };
+
+        document.getElementById("title").innerText = data[lang].title;
+        document.getElementById("desc").innerText = data[lang].desc;
+        document.getElementById("quote").innerText = data[lang].quote;
+        document.getElementById("dashBtn").innerText = data[lang].dash;
+        document.getElementById("volBtn").innerText = data[lang].vol;
+        document.getElementById("footerText").innerText = data[lang].foot;
+
+        document.querySelectorAll(".lang-buttons button").forEach((btn) => {
+          btn.classList.remove("active");
+        });
+
+        event.target.classList.add("active");
+      }
+    </script>
+  </body>
+</html>

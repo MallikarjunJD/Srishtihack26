@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Volunteer Form</title>
+    <link rel="stylesheet" href="volunteer.css" />
+  </head>
+  <body>
+    <div class="lang-bar">
+      <span class="lang-label" id="langLabel">Language:</span>
+      <button class="lang-btn active" onclick="setLang('en')">English</button>
+      <button class="lang-btn" onclick="setLang('kn')">ಕನ್ನಡ</button>
+      <button class="lang-btn" onclick="setLang('hi')">हिंदी</button>
+    </div>
+
+    <div class="form-card">
+      <div class="form-header">
+        <h1 id="formTitle">Volunteer Resource Survey</h1>
+        <p id="formSubtitle">Help us understand your daily resource usage</p>
+      </div>
+
+      <!-- SECTION TABS -->
+      <div class="section-tabs">
+        <button class="tab-btn" id="tab-water" onclick="showSection('water')">
+          <span class="tab-icon">💧</span>
+          <span id="tabWaterLabel">Water</span>
+        </button>
+        <button class="tab-btn" id="tab-elec" onclick="showSection('elec')">
+          <span class="tab-icon">⚡</span>
+          <span id="tabElecLabel">Electricity</span>
+        </button>
+        <button class="tab-btn" id="tab-waste" onclick="showSection('waste')">
+          <span class="tab-icon">♻️</span>
+          <span id="tabWasteLabel">Waste</span>
+        </button>
+      </div>
+
+      <!-- WATER PANEL -->
+      <div class="section-panel panel-water" id="panel-water">
+        <div class="panel-title">
+          <div class="p-icon">💧</div>
+          <div>
+            <h2 id="waterTitle">Water Usage</h2>
+            <p id="waterSubtitle">Track your daily water consumption</p>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label id="waterDropLabel"
+            >How many buckets of water did you use today?</label
+          >
+          <div class="option-cards" id="waterOptions">
+            <div class="option-card" onclick="selectOption('water', 1, this)">
+              <div class="opt-num">1</div>
+              <span class="opt-text" id="wOpt1">Less than 3 buckets</span>
+              <span class="opt-emoji">🪣</span>
+            </div>
+            <div class="option-card" onclick="selectOption('water', 2, this)">
+              <div class="opt-num">2</div>
+              <span class="opt-text" id="wOpt2">3 – 6 buckets</span>
+              <span class="opt-emoji">🪣🪣</span>
+            </div>
+            <div class="option-card" onclick="selectOption('water', 3, this)">
+              <div class="opt-num">3</div>
+              <span class="opt-text" id="wOpt3">More than 6 buckets</span>
+              <span class="opt-emoji">🪣🪣🪣</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+        <button class="submit-btn btn-water" onclick="submitSection('water')">
+          <span>💧</span> <span id="waterSubmitBtn">Submit Water Data</span>
+        </button>
+      </div>
+
+      <!-- ELECTRICITY PANEL -->
+      <div class="section-panel panel-elec" id="panel-elec">
+        <div class="panel-title">
+          <div class="p-icon">⚡</div>
+          <div>
+            <h2 id="elecTitle">Electricity Usage</h2>
+            <p id="elecSubtitle">Track your daily electricity consumption</p>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label id="elecDropLabel"
+            >How many hours of electricity did you use today?</label
+          >
+          <div class="option-cards" id="elecOptions">
+            <div class="option-card" onclick="selectOption('elec', 1, this)">
+              <div class="opt-num">1</div>
+              <span class="opt-text" id="eOpt1">Less than 6 hours</span>
+              <span class="opt-emoji">🔋</span>
+            </div>
+            <div class="option-card" onclick="selectOption('elec', 2, this)">
+              <div class="opt-num">2</div>
+              <span class="opt-text" id="eOpt2">6 – 10 hours</span>
+              <span class="opt-emoji">⚡</span>
+            </div>
+            <div class="option-card" onclick="selectOption('elec', 3, this)">
+              <div class="opt-num">3</div>
+              <span class="opt-text" id="eOpt3">More than 10 hours</span>
+              <span class="opt-emoji">🔌</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+        <button class="submit-btn btn-elec" onclick="submitSection('elec')">
+          <span>⚡</span>
+          <span id="elecSubmitBtn">Submit Electricity Data</span>
+        </button>
+      </div>
+
+      <!-- WASTE PANEL -->
+      <div class="section-panel panel-waste" id="panel-waste">
+        <div class="panel-title">
+          <div class="p-icon">♻️</div>
+          <div>
+            <h2 id="wasteTitle">Waste Generation</h2>
+            <p id="wasteSubtitle">Track your daily waste output</p>
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label id="wasteDropLabel"
+            >How much waste did you generate today?</label
+          >
+          <div class="option-cards" id="wasteOptions">
+            <div class="option-card" onclick="selectOption('waste', 1, this)">
+              <div class="opt-num">1</div>
+              <span class="opt-text" id="wstOpt1">Low</span>
+              <span class="opt-emoji">🟢</span>
+            </div>
+            <div class="option-card" onclick="selectOption('waste', 2, this)">
+              <div class="opt-num">2</div>
+              <span class="opt-text" id="wstOpt2">Medium</span>
+              <span class="opt-emoji">🟡</span>
+            </div>
+            <div class="option-card" onclick="selectOption('waste', 3, this)">
+              <div class="opt-num">3</div>
+              <span class="opt-text" id="wstOpt3">High</span>
+              <span class="opt-emoji">🔴</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+        <button class="submit-btn btn-waste" onclick="submitSection('waste')">
+          <span>♻️</span> <span id="wasteSubmitBtn">Submit Waste Data</span>
+        </button>
+      </div>
+    </div>
+    <!-- /form-card -->
+
+    <!-- TOAST -->
+    <div class="toast" id="toast"></div>
+
+    <script>
+      // ── STATE ──
+      let currentLang = "en";
+      let selectedValues = { water: null, elec: null, waste: null };
+
+      // ── TRANSLATIONS ──
+      const T = {
+        en: {
+          langLabel: "Language:",
+          formTitle: "Volunteer Resource Survey",
+          formSubtitle: "Help us understand your daily resource usage",
+          tabWater: "Water",
+          tabElec: "Electricity",
+          tabWaste: "Waste",
+          waterTitle: "Water Usage",
+          waterSubtitle: "Track your daily water consumption",
+          waterDropLabel: "How many buckets of water did you use today?",
+          wOpt1: "Less than 3 buckets",
+          wOpt2: "3 – 6 buckets",
+          wOpt3: "More than 6 buckets",
+          waterSubmitBtn: "Submit Water Data",
+          elecTitle: "Electricity Usage",
+          elecSubtitle: "Track your daily electricity consumption",
+          elecDropLabel: "How many hours of electricity did you use today?",
+          eOpt1: "Less than 6 hours",
+          eOpt2: "6 – 10 hours",
+          eOpt3: "More than 10 hours",
+          elecSubmitBtn: "Submit Electricity Data",
+          wasteTitle: "Waste Generation",
+          wasteSubtitle: "Track your daily waste output",
+          wasteDropLabel: "How much waste did you generate today?",
+          wstOpt1: "Low",
+          wstOpt2: "Medium",
+          wstOpt3: "High",
+          wasteSubmitBtn: "Submit Waste Data",
+          toastOk: "✅ Data submitted successfully!",
+          toastErr: "⚠️ Please select an option before submitting.",
+        },
+        kn: {
+          langLabel: "ಭಾಷೆ:",
+          formTitle: "ಸ್ವಯಂಸೇವಕ ಸಂಪನ್ಮೂಲ ಸಮೀಕ್ಷೆ",
+          formSubtitle: "ನಿಮ್ಮ ದೈನಂದಿನ ಸಂಪನ್ಮೂಲ ಬಳಕೆಯನ್ನು ತಿಳಿಸಿ",
+          tabWater: "ನೀರು",
+          tabElec: "ವಿದ್ಯುತ್",
+          tabWaste: "ತ್ಯಾಜ್ಯ",
+          waterTitle: "ನೀರಿನ ಬಳಕೆ",
+          waterSubtitle: "ನಿಮ್ಮ ದೈನಂದಿನ ನೀರಿನ ಬಳಕೆ ನೋಂದಾಯಿಸಿ",
+          waterDropLabel: "ಇಂದು ನೀವು ಎಷ್ಟು ಬಕೆಟ್ ನೀರು ಬಳಸಿದ್ದೀರಿ?",
+          wOpt1: "3 ಬಕೆಟ್‌ಗಿಂತ ಕಡಿಮೆ",
+          wOpt2: "3 – 6 ಬಕೆಟ್",
+          wOpt3: "6 ಬಕೆಟ್‌ಗಿಂತ ಹೆಚ್ಚು",
+          waterSubmitBtn: "ನೀರಿನ ಮಾಹಿತಿ ಸಲ್ಲಿಸಿ",
+          elecTitle: "ವಿದ್ಯುತ್ ಬಳಕೆ",
+          elecSubtitle: "ನಿಮ್ಮ ದೈನಂದಿನ ವಿದ್ಯುತ್ ಬಳಕೆ ನೋಂದಾಯಿಸಿ",
+          elecDropLabel: "ಇಂದು ನೀವು ಎಷ್ಟು ಗಂಟೆ ವಿದ್ಯುತ್ ಬಳಸಿದ್ದೀರಿ?",
+          eOpt1: "6 ಗಂಟೆಗಿಂತ ಕಡಿಮೆ",
+          eOpt2: "6 – 10 ಗಂಟೆ",
+          eOpt3: "10 ಗಂಟೆಗಿಂತ ಹೆಚ್ಚು",
+          elecSubmitBtn: "ವಿದ್ಯುತ್ ಮಾಹಿತಿ ಸಲ್ಲಿಸಿ",
+          wasteTitle: "ತ್ಯಾಜ್ಯ ಉತ್ಪಾದನೆ",
+          wasteSubtitle: "ನಿಮ್ಮ ದೈನಂದಿನ ತ್ಯಾಜ್ಯ ಉತ್ಪಾದನೆ ನೋಂದಾಯಿಸಿ",
+          wasteDropLabel: "ಇಂದು ನೀವು ಎಷ್ಟು ತ್ಯಾಜ್ಯ ಉತ್ಪಾದಿಸಿದ್ದೀರಿ?",
+          wstOpt1: "ಕಡಿಮೆ",
+          wstOpt2: "ಮಧ್ಯಮ",
+          wstOpt3: "ಹೆಚ್ಚು",
+          wasteSubmitBtn: "ತ್ಯಾಜ್ಯ ಮಾಹಿತಿ ಸಲ್ಲಿಸಿ",
+          toastOk: "✅ ಮಾಹಿತಿ ಯಶಸ್ವಿಯಾಗಿ ಸಲ್ಲಿಸಲಾಗಿದೆ!",
+          toastErr: "⚠️ ದಯವಿಟ್ಟು ಒಂದು ಆಯ್ಕೆಯನ್ನು ಆರಿಸಿ.",
+        },
+        hi: {
+          langLabel: "भाषा:",
+          formTitle: "स्वयंसेवक संसाधन सर्वेक्षण",
+          formSubtitle: "अपने दैनिक संसाधन उपयोग की जानकारी दें",
+          tabWater: "पानी",
+          tabElec: "बिजली",
+          tabWaste: "कचरा",
+          waterTitle: "पानी का उपयोग",
+          waterSubtitle: "अपने दैनिक पानी के उपयोग को दर्ज करें",
+          waterDropLabel: "आज आपने कितनी बाल्टी पानी का उपयोग किया?",
+          wOpt1: "3 बाल्टी से कम",
+          wOpt2: "3 – 6 बाल्टी",
+          wOpt3: "6 बाल्टी से अधिक",
+          waterSubmitBtn: "पानी की जानकारी जमा करें",
+          elecTitle: "बिजली का उपयोग",
+          elecSubtitle: "अपने दैनिक बिजली उपयोग को दर्ज करें",
+          elecDropLabel: "आज आपने कितने घंटे बिजली का उपयोग किया?",
+          eOpt1: "6 घंटे से कम",
+          eOpt2: "6 – 10 घंटे",
+          eOpt3: "10 घंटे से अधिक",
+          elecSubmitBtn: "बिजली की जानकारी जमा करें",
+          wasteTitle: "कचरा उत्पादन",
+          wasteSubtitle: "अपने दैनिक कचरे की जानकारी दर्ज करें",
+          wasteDropLabel: "आज आपने कितना कचरा उत्पन्न किया?",
+          wstOpt1: "कम",
+          wstOpt2: "मध्यम",
+          wstOpt3: "अधिक",
+          wasteSubmitBtn: "कचरे की जानकारी जमा करें",
+          toastOk: "✅ जानकारी सफलतापूर्वक जमा हो गई!",
+          toastErr: "⚠️ कृपया सबमिट करने से पहले एक विकल्प चुनें।",
+        },
+      };
+
+      // ── APPLY LANGUAGE ──
+      function setLang(lang) {
+        currentLang = lang;
+        const t = T[lang];
+
+        // font for Kannada/Hindi
+        const fontMap = {
+          en: "'Baloo 2', sans-serif",
+          kn: "'Noto Sans Kannada', 'Baloo 2', sans-serif",
+          hi: "'Noto Sans Devanagari', 'Baloo 2', sans-serif",
+        };
+        document.body.style.fontFamily = fontMap[lang];
+
+        // update lang buttons
+        document
+          .querySelectorAll(".lang-btn")
+          .forEach((b) => b.classList.remove("active"));
+        event.target.classList.add("active");
+
+        // update all text nodes
+        setText("langLabel", t.langLabel);
+        setText("formTitle", t.formTitle);
+        setText("formSubtitle", t.formSubtitle);
+        setText("tabWaterLabel", t.tabWater);
+        setText("tabElecLabel", t.tabElec);
+        setText("tabWasteLabel", t.tabWaste);
+        setText("waterTitle", t.waterTitle);
+        setText("waterSubtitle", t.waterSubtitle);
+        setText("waterDropLabel", t.waterDropLabel);
+        setText("wOpt1", t.wOpt1);
+        setText("wOpt2", t.wOpt2);
+        setText("wOpt3", t.wOpt3);
+        setText("waterSubmitBtn", t.waterSubmitBtn);
+        setText("elecTitle", t.elecTitle);
+        setText("elecSubtitle", t.elecSubtitle);
+        setText("elecDropLabel", t.elecDropLabel);
+        setText("eOpt1", t.eOpt1);
+        setText("eOpt2", t.eOpt2);
+        setText("eOpt3", t.eOpt3);
+        setText("elecSubmitBtn", t.elecSubmitBtn);
+        setText("wasteTitle", t.wasteTitle);
+        setText("wasteSubtitle", t.wasteSubtitle);
+        setText("wasteDropLabel", t.wasteDropLabel);
+        setText("wstOpt1", t.wstOpt1);
+        setText("wstOpt2", t.wstOpt2);
+        setText("wstOpt3", t.wstOpt3);
+        setText("wasteSubmitBtn", t.wasteSubmitBtn);
+      }
+
+      function setText(id, val) {
+        const el = document.getElementById(id);
+        if (el) el.textContent = val;
+      }
+
+      // ── SECTION TOGGLE ──
+      function showSection(section) {
+        // hide all panels
+        ["water", "elec", "waste"].forEach((s) => {
+          document.getElementById("panel-" + s).classList.remove("visible");
+          const tab = document.getElementById("tab-" + s);
+          tab.classList.remove("active-water", "active-elec", "active-waste");
+        });
+
+        // show selected
+        document.getElementById("panel-" + section).classList.add("visible");
+        const activeTab = document.getElementById("tab-" + section);
+        activeTab.classList.add("active-" + section);
+      }
+
+      // ── OPTION SELECTION ──
+      function selectOption(section, val, el) {
+        selectedValues[section] = val;
+        const sectionClass = {
+          water: "selected-water",
+          elec: "selected-elec",
+          waste: "selected-waste",
+        }[section];
+        const panelId =
+          section === "elec"
+            ? "elecOptions"
+            : section === "water"
+              ? "waterOptions"
+              : "wasteOptions";
+        document
+          .querySelectorAll("#" + panelId + " .option-card")
+          .forEach((c) => {
+            c.classList.remove(
+              "selected-water",
+              "selected-elec",
+              "selected-waste",
+            );
+          });
+        el.classList.add(sectionClass);
+      }
+
+      // ── SUBMIT ──
+      async function submitSection(section) {
+        const t = T[currentLang];
+
+        if (!selectedValues[section]) {
+          showToast(t.toastErr);
+          return;
+        }
+
+        try {
+          const payload = {
+            water: selectedValues.water,
+            elec: selectedValues.elec,
+            waste: selectedValues.waste,
+          };
+
+          const res = await fetch("/submit-form", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(payload),
+          });
+
+          const data = await res.json();
+
+          if (res.ok) {
+            showToast(`✅ Score: ${data.score}`);
+          } else {
+            showToast("⚠️ Error submitting data");
+          }
+        } catch (err) {
+          console.error(err);
+          showToast("⚠️ Server error");
+        }
+
+        // reset UI
+        selectedValues[section] = null;
+        const panelId =
+          section === "elec"
+            ? "elecOptions"
+            : section === "water"
+              ? "waterOptions"
+              : "wasteOptions";
+
+        document
+          .querySelectorAll("#" + panelId + " .option-card")
+          .forEach((c) => {
+            c.classList.remove(
+              "selected-water",
+              "selected-elec",
+              "selected-waste",
+            );
+          });
+      }
+
+      // ── TOAST ──
+      let toastTimer;
+      function showToast(msg) {
+        const toast = document.getElementById("toast");
+        toast.textContent = msg;
+        toast.classList.add("show");
+        clearTimeout(toastTimer);
+        toastTimer = setTimeout(() => toast.classList.remove("show"), 2800);
+      }
+
+      // ── INIT: show water tab by default ──
+      showSection("water");
+    </script>
+  </body>
+</html>

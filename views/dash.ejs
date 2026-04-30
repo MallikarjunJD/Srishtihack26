@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DailyDrop Dashboard</title>
+    <link rel="stylesheet" href="dash.css" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  </head>
+
+  <body>
+    <div class="wrapper">
+      <!-- LANG TOGGLE -->
+      <div class="lang-toggle">
+        <button class="lang-btn active" onclick="setLang('en')">English</button>
+        <button class="lang-btn" onclick="setLang('kn')">ಕನ್ನಡ</button>
+      </div>
+
+      <!-- TOP -->
+      <div class="topbar">
+        <div class="title">
+          <h1 id="t-title">Dashboard</h1>
+          <p id="t-subtitle">
+            Community sustainability monitoring & volunteer accountability
+            system
+          </p>
+        </div>
+
+        <div class="mini-cards">
+          <div class="mini">
+            <h4 id="t-problems">Problems</h4>
+            <strong>24</strong>
+          </div>
+          <div class="mini">
+            <h4 id="t-saving">Estimated Saving</h4>
+            <strong>520L</strong>
+          </div>
+          <div class="mini">
+            <h4 id="t-rank">Ranking Community</h4>
+            <strong>#03</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- GRID -->
+      <div class="grid">
+        <!-- LEFT NAVIGATION -->
+        <div class="side">
+          <div class="nav-card" id="card-water">
+            <div class="nav-head">
+              <h2>1️⃣ <span id="t-water">Water</span></h2>
+              <span class="status" id="badge-water">–</span>
+            </div>
+            <p id="t-water-desc">
+              Leakage reports, overflow taps, shared water misuse and urgent
+              water complaints.
+            </p>
+            <strong id="score-water-display">–</strong>
+            <div class="score-bar-wrap">
+              <div class="score-bar-fill" id="bar-water"></div>
+            </div>
+          </div>
+
+          <div class="nav-card" id="card-elec">
+            <div class="nav-head">
+              <h2>2️⃣ <span id="t-elec">Electricity</span></h2>
+              <span class="status" id="badge-elec">–</span>
+            </div>
+            <p id="t-elec-desc">
+              Street lights on in daytime, exposed lines, unnecessary power
+              consumption.
+            </p>
+            <strong id="score-elec-display">–</strong>
+            <div class="score-bar-wrap">
+              <div class="score-bar-fill" id="bar-elec"></div>
+            </div>
+          </div>
+
+          <div class="nav-card" id="card-waste">
+            <div class="nav-head">
+              <h2>3️⃣ <span id="t-waste">Material / Waste</span></h2>
+              <span class="status" id="badge-waste">–</span>
+            </div>
+            <p id="t-waste-desc">
+              Garbage overflow, recyclable waste, blocked disposal areas and
+              cleanliness issues.
+            </p>
+            <strong id="score-waste-display">–</strong>
+            <div class="score-bar-wrap">
+              <div class="score-bar-fill" id="bar-waste"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT CONTENT -->
+        <div class="content">
+          <!-- COMMUNITY SCORE -->
+          <div class="panel" id="panel-score">
+            <h2 id="t-score-title">🌍 Community Impact Score</h2>
+            <div class="score-box">
+              <div class="big-score" id="community-score-display">–</div>
+              <p id="t-score-desc">
+                Average of Water, Electricity and Waste scores. Based on issue
+                reporting, problem resolution, volunteer participation and
+                resource savings.
+              </p>
+            </div>
+          </div>
+
+          <!-- CHART -->
+          <div class="panel">
+            <h2 id="t-trend">📈 Weekly Problem Trend</h2>
+            <canvas id="trendChart" height="110"></canvas>
+          </div>
+
+          <!-- COMMUNITY RANKINGS -->
+          <div class="panel">
+            <h2 id="t-rankings">🏆 Community Rankings & Our Standing</h2>
+            <table>
+              <thead>
+                <tr>
+                  <th id="t-col-rank">Rank</th>
+                  <th id="t-col-community">Community</th>
+                  <th id="t-col-score">Score</th>
+                  <th id="t-col-status">Status</th>
+                </tr>
+              </thead>
+              <tbody id="rankings-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- SUGGESTIONS -->
+      <div class="suggestion-panel" style="margin-top: 22px">
+        <h2 id="t-suggestions">💡 Suggestions Based on Current Status</h2>
+        <div class="suggestions-list" id="suggestions-list"></div>
+      </div>
+
+      <div class="map-panel" style="margin-top: 22px">
+        <h2>🗺️ Hubli–Dharwad Zone Map</h2>
+
+        <svg
+          viewBox="0 0 600 400"
+          style="width: 100%; background: #f3f4f6; border-radius: 12px"
+        >
+          <!-- HUBLI SIDE -->
+          <rect
+            id="zone-vidyanagar"
+            x="50"
+            y="50"
+            width="120"
+            height="80"
+            rx="10"
+          ></rect>
+          <text x="70" y="95" font-size="12">Vidyanagar</text>
+
+          <rect
+            id="zone-gokul"
+            x="200"
+            y="50"
+            width="120"
+            height="80"
+            rx="10"
+          ></rect>
+          <text x="230" y="95" font-size="12">Gokul</text>
+
+          <rect
+            id="zone-keshwapur"
+            x="50"
+            y="150"
+            width="120"
+            height="80"
+            rx="10"
+          ></rect>
+          <text x="65" y="195" font-size="12">Keshwapur</text>
+
+          <rect
+            id="zone-oldhubli"
+            x="200"
+            y="150"
+            width="120"
+            height="80"
+            rx="10"
+          ></rect>
+          <text x="225" y="195" font-size="12">Old Hubli</text>
+
+          <!-- CONNECTOR -->
+          <rect
+            x="350"
+            y="120"
+            width="40"
+            height="40"
+            fill="#9ca3af"
+            rx="5"
+          ></rect>
+          <text x="355" y="145" font-size="10">NH</text>
+
+          <!-- DHARWAD SIDE -->
+          <rect
+            id="zone-malmaddi"
+            x="420"
+            y="50"
+            width="120"
+            height="80"
+            rx="10"
+          ></rect>
+          <text x="445" y="95" font-size="12">Malmaddi</text>
+
+          <rect
+            id="zone-saptapur"
+            x="420"
+            y="150"
+            width="120"
+            height="80"
+            rx="10"
+          ></rect>
+          <text x="445" y="195" font-size="12">Saptapur</text>
+
+          <rect
+            id="zone-navanagar"
+            x="420"
+            y="250"
+            width="120"
+            height="80"
+            rx="10"
+          ></rect>
+          <text x="445" y="295" font-size="12">Navanagar</text>
+        </svg>
+      </div>
+
+      <div class="footer" id="t-footer">
+        EcoVoice • Sustainability Hackathon MVP Dashboard
+      </div>
+    </div>
+    <!-- end wrapper -->
+
+    <script>
+      let chartInstance = null;
+
+      let scores = {
+        water: 0,
+        waste: 0,
+        elec: 0,
+      };
+
+      async function fetchData() {
+        try {
+          const res = await fetch("http://localhost:8080/community");
+          const data = await res.json();
+
+          scores = {
+            water: data.water || 0,
+            waste: data.waste || 0,
+            elec: data.elec || 0,
+          };
+
+          renderAll();
+        } catch (err) {
+          console.error("Fetch error:", err);
+        }
+      }
+
+      // ─── TRANSLATIONS ──────────────────────────────────────────────────────────
+      const T = {
+        en: {
+          title: "🌱 EcoVoice Dashboard",
+          subtitle:
+            "Community sustainability monitoring & volunteer accountability system",
+          problems: "Problems",
+          saving: "Estimated Saving",
+          rank: "Ranking Community",
+          water: "Water",
+          elec: "Electricity",
+          waste: "Material / Waste",
+          "water-desc":
+            "Leakage reports, overflow taps, shared water misuse and urgent water complaints.",
+          "elec-desc":
+            "Street lights on in daytime, exposed lines, unnecessary power consumption.",
+          "waste-desc":
+            "Garbage overflow, recyclable waste, blocked disposal areas and cleanliness issues.",
+          "score-title": "🌍 Community Impact Score",
+          "score-desc":
+            "Average of Water, Electricity and Waste scores. Based on issue reporting, problem resolution, volunteer participation and resource savings.",
+          trend: "📈 Weekly Problem Trend",
+          rankings: "🏆 Community Rankings & Our Standing",
+          "col-rank": "Rank",
+          "col-community": "Community",
+          "col-score": "Score",
+          "col-status": "Status",
+          suggestions: "💡 Suggestions Based on Current Status",
+          map: "🗺️ Zone Alert Map",
+          "leg-high": "High Alert",
+          "leg-med": "Medium Alert",
+          "leg-low": "Low Alert",
+          footer: "EcoVoice • Sustainability Hackathon MVP Dashboard",
+          high: "High",
+          medium: "Medium",
+          low: "Low",
+          "our-community": "Our Community",
+          weeks: ["Week 1", "Week 2", "Week 3", "Week 4"],
+        },
+        kn: {
+          title: "🌱 ಇಕೋವಾಯ್ಸ್ ಡ್ಯಾಶ್‌ಬೋರ್ಡ್",
+          subtitle:
+            "ಸಮುದಾಯ ಸ್ಥಿರತೆ ಮೇಲ್ವಿಚಾರಣೆ ಮತ್ತು ಸ್ವಯಂಸೇವಕ ಹೊಣೆಗಾರಿಕೆ ವ್ಯವಸ್ಥೆ",
+          problems: "ಸಮಸ್ಯೆಗಳು",
+          saving: "ಅಂದಾಜು ಉಳಿತಾಯ",
+          rank: "ಸಮುದಾಯ ಶ್ರೇಣಿ",
+          water: "ನೀರು",
+          elec: "ವಿದ್ಯುತ್",
+          waste: "ತ್ಯಾಜ್ಯ",
+          "water-desc":
+            "ಸೋರಿಕೆ ವರದಿಗಳು, ತೆರೆದ ನಲ್ಲಿಗಳು, ಮತ್ತು ತುರ್ತು ನೀರಿನ ದೂರುಗಳು.",
+          "elec-desc":
+            "ಹಗಲಿನಲ್ಲಿ ಬೀದಿ ದೀಪಗಳು, ತೆರೆದ ತಂತಿಗಳು, ಅನಗತ್ಯ ವಿದ್ಯುತ್ ಬಳಕೆ.",
+          "waste-desc":
+            "ಕಸ ತುಂಬಿ ಹರಿಯುವಿಕೆ, ಮರುಬಳಕೆ ತ್ಯಾಜ್ಯ, ನಿರ್ಬಂಧಿತ ವಿಲೇವಾರಿ ಪ್ರದೇಶಗಳು.",
+          "score-title": "🌍 ಸಮುದಾಯ ಪರಿಣಾಮ ಅಂಕ",
+          "score-desc":
+            "ನೀರು, ವಿದ್ಯುತ್ ಮತ್ತು ತ್ಯಾಜ್ಯ ಅಂಕಗಳ ಸರಾಸರಿ. ಸಮಸ್ಯೆ ವರದಿ, ಪರಿಹಾರ ಮತ್ತು ಸ್ವಯಂಸೇವಕ ಭಾಗವಹಿಸುವಿಕೆ ಆಧಾರಿತ.",
+          trend: "📈 ವಾರದ ಸಮಸ್ಯೆ ಪ್ರವೃತ್ತಿ",
+          rankings: "🏆 ಸಮುದಾಯ ಶ್ರೇಣಿ & ನಮ್ಮ ಸ್ಥಾನ",
+          "col-rank": "ಶ್ರೇಣಿ",
+          "col-community": "ಸಮುದಾಯ",
+          "col-score": "ಅಂಕ",
+          "col-status": "ಸ್ಥಿತಿ",
+          suggestions: "💡 ಪ್ರಸ್ತುತ ಸ್ಥಿತಿ ಆಧಾರಿತ ಸಲಹೆಗಳು",
+          map: "🗺️ ವಲಯ ಎಚ್ಚರಿಕೆ ನಕ್ಷೆ",
+          "leg-high": "ಹೆಚ್ಚಿನ ಎಚ್ಚರಿಕೆ",
+          "leg-med": "ಮಧ್ಯಮ ಎಚ್ಚರಿಕೆ",
+          "leg-low": "ಕಡಿಮೆ ಎಚ್ಚರಿಕೆ",
+          footer: "ಇಕೋವಾಯ್ಸ್ • ಸ್ಥಿರತೆ ಹ್ಯಾಕಥಾನ್ MVP ಡ್ಯಾಶ್‌ಬೋರ್ಡ್",
+          high: "ಹೆಚ್ಚು",
+          medium: "ಮಧ್ಯಮ",
+          low: "ಕಡಿಮೆ",
+          "our-community": "ನಮ್ಮ ಸಮುದಾಯ",
+          weeks: ["ವಾರ 1", "ವಾರ 2", "ವಾರ 3", "ವಾರ 4"],
+        },
+      };
+      let lang = "en";
+
+      function t(key) {
+        return T[lang][key] || T["en"][key] || key;
+      }
+
+      function setLang(l) {
+        lang = l;
+        document
+          .querySelectorAll(".lang-btn")
+          .forEach((b) =>
+            b.classList.toggle(
+              "active",
+              b.textContent.trim() === (l === "en" ? "English" : "ಕನ್ನಡ"),
+            ),
+          );
+        applyTranslations();
+        renderAll();
+      }
+
+      function applyTranslations() {
+        const ids = [
+          "title",
+          "subtitle",
+          "problems",
+          "saving",
+          "rank",
+          "water",
+          "elec",
+          "waste",
+          "water-desc",
+          "elec-desc",
+          "waste-desc",
+          "score-title",
+          "score-desc",
+          "trend",
+          "rankings",
+          "col-rank",
+          "col-community",
+          "col-score",
+          "col-status",
+          "suggestions",
+          "map",
+          "leg-high",
+          "leg-med",
+          "leg-low",
+          "footer",
+        ];
+        ids.forEach((id) => {
+          const el = document.getElementById("t-" + id);
+          if (el) el.textContent = t(id);
+        });
+      }
+
+      // ─── UTILITY ───────────────────────────────────────────────────────────────
+      function getState(score) {
+        if (score < 40) return "red";
+        if (score < 75) return "yellow";
+        return "green";
+      }
+
+      function getStateLabel(score) {
+        if (score < 40) return t("high");
+        if (score < 75) return t("medium");
+        return t("low");
+      }
+
+      function getBarColor(state) {
+        return state === "red"
+          ? "#dc2626"
+          : state === "yellow"
+            ? "#f59e0b"
+            : "#1f7a4d";
+      }
+
+      // ─── RENDER SCORES ─────────────────────────────────────────────────────────
+      function renderScores() {
+        const keys = ["water", "elec", "waste"];
+        const cardIds = ["card-water", "card-elec", "card-waste"];
+        const badgeIds = ["badge-water", "badge-elec", "badge-waste"];
+        const dispIds = [
+          "score-water-display",
+          "score-elec-display",
+          "score-waste-display",
+        ];
+        const barIds = ["bar-water", "bar-elec", "bar-waste"];
+        const scoreVals = [scores.water, scores.elec, scores.waste];
+
+        scoreVals.forEach((s, i) => {
+          const state = getState(s);
+          const card = document.getElementById(cardIds[i]);
+          card.className = "nav-card state-" + state;
+
+          const badge = document.getElementById(badgeIds[i]);
+          badge.textContent = getStateLabel(s);
+          badge.className = "status " + state;
+
+          document.getElementById(dispIds[i]).textContent = s + " / 100";
+
+          const bar = document.getElementById(barIds[i]);
+          bar.style.width = s + "%";
+          bar.style.background = getBarColor(state);
+        });
+
+        function getEmoji(score) {
+          if (score > 70) return "😊";
+          if (score > 40) return "😐";
+          return "⚠️";
+        }
+
+        // Community score
+        const avg = Math.round((scores.water + scores.elec + scores.waste) / 3);
+        const avgState = getState(avg);
+        document.getElementById("community-score-display").innerHTML =
+          avg + " " + getEmoji(avg);
+        const panel = document.getElementById("panel-score");
+        panel.className = "panel state-" + avgState;
+      }
+
+      async function renderRankings() {
+        const res = await fetch("http://localhost:8080/rankings");
+        const data = await res.json();
+
+        const tbody = document.getElementById("rankings-body");
+        tbody.innerHTML = "";
+
+        data.forEach((c, i) => {
+          const tr = document.createElement("tr");
+
+          tr.innerHTML = `
+      <td>#${i + 1}</td>
+      <td>${c.zone}</td>
+      <td>${c.score}</td>
+      <td>${c.score > 70 ? "🟢" : c.score > 40 ? "🟡" : "🔴"}</td>
+    `;
+
+          tbody.appendChild(tr);
+        });
+      }
+
+      // ─── RENDER SUGGESTIONS ────────────────────────────────────────────────────
+      const suggestions_en = {
+        water_low: [
+          "💧 Fix leaks and dripping taps immediately.",
+          "🚿 Reduce shower time and reuse grey water.",
+          "🌧️ Collect rainwater for garden use.",
+        ],
+        water_med: [
+          "💧 Monitor water usage in common areas.",
+          "🔧 Schedule regular pipe inspections.",
+        ],
+        water_ok: ["💧 Great water management! Keep it up."],
+        elec_low: [
+          "💡 Turn off street lights during daytime.",
+          "🔌 Unplug idle appliances; use LED bulbs.",
+          "☀️ Explore solar energy options.",
+        ],
+        elec_med: [
+          "💡 Set timers for common area lighting.",
+          "⚡ Audit high-consumption appliances.",
+        ],
+        elec_ok: ["💡 Excellent electricity discipline!"],
+        waste_low: [
+          "🗑️ Increase waste collection frequency.",
+          "♻️ Set up separate bins for dry/wet waste.",
+          "🧹 Organise community clean-up drives.",
+        ],
+        waste_med: [
+          "🗑️ Label bins clearly for better sorting.",
+          "📦 Reduce single-use plastic.",
+        ],
+        waste_ok: ["🗑️ Waste management is on track!"],
+        score_low: [
+          "⚠️ Community score is critical — urgent action needed across all areas.",
+        ],
+        score_med: [
+          "📊 Community score is moderate — focus on the weakest category.",
+        ],
+        score_ok: ["🌟 Outstanding community score! Keep the momentum going."],
+      };
+
+      const suggestions_kn = {
+        water_low: [
+          "💧 ಸೋರಿಕೆ ಮತ್ತು ಹನಿ ಬೀಳುವ ನಲ್ಲಿಗಳನ್ನು ತಕ್ಷಣ ಸರಿಪಡಿಸಿ.",
+          "🚿 ಸ್ನಾನದ ಸಮಯ ಕಡಿಮೆ ಮಾಡಿ ಮತ್ತು ನೀರನ್ನು ಮರುಬಳಕೆ ಮಾಡಿ.",
+          "🌧️ ತೋಟಕ್ಕಾಗಿ ಮಳೆ ನೀರು ಸಂಗ್ರಹಿಸಿ.",
+        ],
+        water_med: [
+          "💧 ಸಾಮಾನ್ಯ ಪ್ರದೇಶಗಳಲ್ಲಿ ನೀರಿನ ಬಳಕೆ ಗಮನಿಸಿ.",
+          "🔧 ನಿಯಮಿತ ಪೈಪ್ ತಪಾಸಣೆ ನಡೆಸಿ.",
+        ],
+        water_ok: ["💧 ಉತ್ತಮ ನೀರಿನ ನಿರ್ವಹಣೆ! ಮುಂದುವರಿಸಿ."],
+        elec_low: [
+          "💡 ಹಗಲಿನಲ್ಲಿ ಬೀದಿ ದೀಪಗಳನ್ನು ಆಫ್ ಮಾಡಿ.",
+          "🔌 ಉಪಕರಣಗಳನ್ನು ಅನ್‌ಪ್ಲಗ್ ಮಾಡಿ; LED ಬಲ್ಬ್ ಬಳಸಿ.",
+          "☀️ ಸೌರ ಶಕ್ತಿ ಆಯ್ಕೆಗಳನ್ನು ಪರಿಶೀಲಿಸಿ.",
+        ],
+        elec_med: [
+          "💡 ಸಾಮಾನ್ಯ ದೀಪಗಳಿಗೆ ಟೈಮರ್ ಹೊಂದಿಸಿ.",
+          "⚡ ಹೆಚ್ಚು ಬಳಕೆಯ ಉಪಕರಣಗಳ ಲೆಕ್ಕ ಮಾಡಿ.",
+        ],
+        elec_ok: ["💡 ಅತ್ಯುತ್ತಮ ವಿದ್ಯುತ್ ಶಿಸ್ತು!"],
+        waste_low: [
+          "🗑️ ತ್ಯಾಜ್ಯ ಸಂಗ್ರಹ ಆವರ್ತನ ಹೆಚ್ಚಿಸಿ.",
+          "♻️ ಒಣ/ಹಸಿ ತ್ಯಾಜ್ಯಕ್ಕೆ ಪ್ರತ್ಯೇಕ ಡಬ್ಬಿ ಹಾಕಿ.",
+          "🧹 ಸಮುದಾಯ ಶುಚಿತ್ವ ಕ್ರಿಯಾಕ್ರಮ ಆಯೋಜಿಸಿ.",
+        ],
+        waste_med: [
+          "🗑️ ಉತ್ತಮ ವಿಂಗಡಣೆಗಾಗಿ ಡಬ್ಬಿಗಳಿಗೆ ಸ್ಪಷ್ಟ ಲೇಬಲ್ ಹಾಕಿ.",
+          "📦 ಏಕಬಳಕೆ ಪ್ಲಾಸ್ಟಿಕ್ ಕಡಿಮೆ ಮಾಡಿ.",
+        ],
+        waste_ok: ["🗑️ ತ್ಯಾಜ್ಯ ನಿರ್ವಹಣೆ ಸರಿಯಾಗಿದೆ!"],
+        score_low: ["⚠️ ಸಮುದಾಯ ಅಂಕ ತುಂಬಾ ಕಡಿಮೆ — ತಕ್ಷಣ ಕ್ರಮ ಅಗತ್ಯ."],
+        score_med: ["📊 ಸಮುದಾಯ ಅಂಕ ಮಧ್ಯಮ — ದುರ್ಬಲ ವಿಭಾಗದ ಮೇಲೆ ಗಮನ ಕೊಡಿ."],
+        score_ok: ["🌟 ಅತ್ಯುತ್ತಮ ಸಮುದಾಯ ಅಂಕ! ಈ ಚಾಲನೆ ಮುಂದುವರಿಸಿ."],
+      };
+
+      let currentUtterance = null;
+
+      function speak(text, btnEl) {
+        if (!window.speechSynthesis) return;
+        window.speechSynthesis.cancel();
+        if (btnEl.classList.contains("speaking")) {
+          btnEl.classList.remove("speaking");
+          btnEl.innerHTML = "🔊 Play";
+          return;
+        }
+        document.querySelectorAll(".speak-btn").forEach((b) => {
+          b.classList.remove("speaking");
+          b.innerHTML = "🔊 Play";
+        });
+        const u = new SpeechSynthesisUtterance(text);
+        u.lang = lang === "kn" ? "kn-IN" : "en-IN";
+        u.onend = () => {
+          btnEl.classList.remove("speaking");
+          btnEl.innerHTML = "🔊 Play";
+        };
+        currentUtterance = u;
+        btnEl.classList.add("speaking");
+        btnEl.innerHTML = "⏹ Stop";
+        window.speechSynthesis.speak(u);
+      }
+
+      function renderSuggestions() {
+        const S = lang === "kn" ? suggestions_kn : suggestions_en;
+        const avg = Math.round((scores.water + scores.elec + scores.waste) / 3);
+
+        const waterState = getState(scores.water);
+        const elecState = getState(scores.elec);
+        const wasteState = getState(scores.waste);
+        const avgState = getState(avg);
+
+        const items = [];
+        const wKey =
+          waterState === "red"
+            ? "water_low"
+            : waterState === "yellow"
+              ? "water_med"
+              : "water_ok";
+        const eKey =
+          elecState === "red"
+            ? "elec_low"
+            : elecState === "yellow"
+              ? "elec_med"
+              : "elec_ok";
+        const rKey =
+          wasteState === "red"
+            ? "waste_low"
+            : wasteState === "yellow"
+              ? "waste_med"
+              : "waste_ok";
+        const sKey =
+          avgState === "red"
+            ? "score_low"
+            : avgState === "yellow"
+              ? "score_med"
+              : "score_ok";
+
+        [...S[wKey], ...S[eKey], ...S[rKey], ...S[sKey]].forEach((msg) =>
+          items.push(msg),
+        );
+
+        const list = document.getElementById("suggestions-list");
+        list.innerHTML = "";
+        items.forEach((msg) => {
+          const cls =
+            msg.includes("⚠️") ||
+            msg.includes("💧") ||
+            msg.includes("🔌") ||
+            msg.includes("🗑️") ||
+            msg.includes("♻️")
+              ? "suggestion-item warn"
+              : "suggestion-item";
+          const div = document.createElement("div");
+          div.className = cls;
+          div.innerHTML = `<span>${msg}</span><button class="speak-btn" onclick="speak(this.previousElementSibling.textContent, this)">🔊 Play</button>`;
+          list.appendChild(div);
+        });
+      }
+
+      async function renderMap() {
+        const res = await fetch("http://localhost:8080/zones");
+        const zones = await res.json();
+
+        zones.forEach((z) => {
+          const id = "zone-" + z.name.toLowerCase().replace(/\s/g, "");
+          const el = document.getElementById(id);
+
+          if (!el) return;
+
+          let color =
+            z.score > 70 ? "#1f7a4d" : z.score > 40 ? "#f59e0b" : "#dc2626";
+
+          el.style.fill = color;
+
+          // Tooltip
+          el.innerHTML = `<title>${z.name} - Score: ${z.score}</title>`;
+        });
+      }
+
+      async function renderChart() {
+        try {
+          const res = await fetch("http://localhost:8080/trend");
+          const data = await res.json();
+
+          if (chartInstance) chartInstance.destroy();
+
+          const ctx = document.getElementById("trendChart").getContext("2d");
+
+          chartInstance = new Chart(ctx, {
+            type: "line",
+            data: {
+              labels: [
+                "Day 1",
+                "Day 2",
+                "Day 3",
+                "Day 4",
+                "Day 5",
+                "Day 6",
+                "Day 7",
+              ],
+              datasets: [
+                {
+                  label: "Water",
+                  data: data.water || [],
+                  borderWidth: 3,
+                  tension: 0.4,
+                  fill: true,
+                },
+                {
+                  label: "Waste",
+                  data: data.waste || [],
+                  borderWidth: 3,
+                  tension: 0.4,
+                  fill: true,
+                },
+                {
+                  label: "Electricity",
+                  data: data.elec || [],
+                  borderWidth: 3,
+                  tension: 0.4,
+                  fill: true,
+                },
+              ],
+            },
+            options: {
+              responsive: true,
+              plugins: {
+                legend: {
+                  labels: {
+                    font: { size: 14 },
+                  },
+                },
+              },
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  max: 100,
+                  ticks: {
+                    stepSize: 20,
+                  },
+                },
+              },
+            },
+          });
+        } catch (err) {
+          console.error("Chart error:", err);
+        }
+      }
+
+      async function renderAll() {
+        renderScores();
+        await renderRankings();
+        renderSuggestions();
+        await renderMap();
+        await renderChart();
+      }
+
+      function getVoiceMessage(score) {
+        if (score >= 80)
+          return "Excellent. Your community is saving resources efficiently.";
+
+        if (score >= 60) return "Good performance. Focus on reducing waste.";
+
+        if (score >= 40)
+          return "Average performance. Improve water usage and segregation.";
+
+        return "Critical level. Immediate action required to reduce resource waste.";
+      }
+
+      function speakScore() {
+        fetch("http://localhost:8080/community")
+          .then((res) => res.json())
+          .then((data) => {
+            const msg = `Community score is ${data.communityScore}`;
+            speak(msg);
+          });
+      }
+
+      function speakSummary() {
+        fetch("http://localhost:8080/community")
+          .then((res) => res.json())
+          .then((data) => {
+            const msg = `Community score ${data.communityScore}. Water ${data.water}. Waste ${data.waste}`;
+            const u = new SpeechSynthesisUtterance(msg);
+            u.lang = "en-IN";
+            speechSynthesis.speak(u);
+          });
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        applyTranslations();
+        fetchData();
+        setInterval(fetchData, 5000);
+      });
+    </script>
+  </body>
+</html>
